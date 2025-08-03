@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="file" id="input">
+    <script>
+        function imgToWebP(file, callback, quality = 0.8) {
+  const img = new Image();
+  const reader = new FileReader();
+  reader.onload = e => {
+    img.src = e.target.result;
+  };
+  img.onload = () => {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    callback(canvas.toDataURL("image/webp", quality));
+  };
+  reader.readAsDataURL(file);
+}
+
+// Uso:
+document.getElementById("input").addEventListener("change", (e)=>{
+    imgToWebP(e.target.files[0], webpStr => {
+        console.log(webpStr); // cadena Base64 en WebP
+        alert(webpStr)
+    });
+})
+    </script>
+</body>
+</html>
