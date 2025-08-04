@@ -1,9 +1,9 @@
 -- NOTES.md --
 ## Flujo de Notroid
 1. Cargar FS de localStorage o cargar el default (`src/core/fs.js`, `NotroidFS`)
-2. Cargar apps de "src/apps/*.json" al FileSystem ficticio de Notroid en "apps" (y crear la carpeta si es necesario) (`src/core/apps.js`, `loadApps`)
-- 2.2. Solo cargar esas apps "pre-hechas" si no hay ninguna app
-3. 
+2. Llamar a la BIOS (de ahí se llamará todo lo siguiente) (`src/core/bios.js`, `BIOS.boot()`)
+3. Pasar control a
+4. 
 
 ## Sistema de archivos inicial de Notroid PROPUESTA:
 ```js

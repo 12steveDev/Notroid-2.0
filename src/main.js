@@ -1,2 +1,2 @@
-// main.js
-executeNotroid("HitlerOS", ["DELETE", "Notroid32"])
+// src/main.js
+BIOS.boot();

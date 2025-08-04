@@ -7,10 +7,18 @@
     <title>Notroid 2.0</title>
 </head>
 <body>
-    <div id="bios"></div>
-    <div id="desktop">
-        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non rem, officiis eos omnis nihil perspiciatis vero pariatur consequatur eius consequuntur enim fugit delectus dignissimos debitis quia, excepturi expedita quibusdam inventore?</p>
+    <div id="terminal" contenteditable="false"></div>
+    <div id="desktop" class="hide">Hola Mundo Gráfico</div>
+    <div id="bsod" class="hide">
+        <div class="box">
+            <h1>ꓽ(</h1>
+        <p id="bsodPError"></p>
+        </div>
     </div>
+    <script src="src/utils/utils.js"></script>
+    <script src="src/core/notroid.js"></script>
+    <script src="src/core/terminal.js"></script>
+    <script src="src/core/bios.js"></script>
     <script src="src/core/actions.js"></script>
     <script src="src/core/fs.js"></script>
     <script src="src/main.js"></script>
