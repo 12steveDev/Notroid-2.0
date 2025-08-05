@@ -1,0 +1,72 @@
+.window {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #444444;
+    box-shadow: 0 0 10px -2px #000000;
+    min-width: 130px;
+    min-height: 50px;
+    transition: transform 0.3s, opacity 0.3s;
+}
+.window .header {
+    display: grid;
+    grid-template-columns: 1fr repeat(3, 30px);
+    background: #008080;
+    height: 25px;
+}
+.window .header button {
+    width: 30px;
+    height: 100%;
+    background: none;
+    border: none;
+    user-select: none;
+}
+.window .header button:hover {
+    background: #00000022;
+}
+.window .header button:active {
+    background: #00000055;
+}
+.window .header :nth-last-child(1):hover {
+    background: #ff0000;
+    color: #ffffff;
+}
+.window .header :nth-last-child(1):active {
+    background: #bb0000;
+}
+.window .header p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    margin: 3px 5px 1px 5px;
+    user-select: none;
+    font-size: 14px;
+}
+.window .content {
+    padding: 5px;
+}
+
+/* Atributos de la ventana */
+.window.fullscreen {
+    min-width: 50px;
+    min-height: 25px;
+}
+.window.fullscreen .header {
+    display: none;
+}
+.window.nocontrols button {
+    display: none;
+}
+.window.maximized {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+.window.minimized {
+    opacity: 0;
+    transform: scale(0.9);
+}

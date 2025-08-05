@@ -112,6 +112,7 @@ class BIOS {
             sessionStorage.setItem("firstBoot", "true");
         }
         // 3. Transferir control al sistema
+        sleep = ()=>{}
         Terminal.clear()
         await sleep(1000);
         Terminal.writeln("Pasando control a NotroidOS...", "cyan", true);

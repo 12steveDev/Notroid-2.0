@@ -1,18 +1,25 @@
 -- NOTES.md --
 ## Flujo de Notroid
-1. Cargar FS de localStorage o cargar el default (`src/core/fs.js`, `NotroidFS`)
-2. Llamar a la BIOS (de ahí se llamará todo lo siguiente) (`src/core/bios.js`, `BIOS.boot()`)
-3. Pasar control a
-4. 
+1. Cargar FS de localStorage o cargar el default
+2. Llamar a la BIOS para simular chequeo de componentes (CPU, RAM, etc...)
+3. Pasar control a "Notroid/system/bootmgr.nsh" (aka ejecutarlo)
+4. BOOTMGR ejecuta "Notroid/system/notkrnl.nsh"
+5. NOTKRNL ejecuta los drivers (Notroid/system/drivers/*.nsh)
+- - display.nsh maneja el modo de video y resolución (ya hay video, yayyy)
 
 ## Sistema de archivos inicial de Notroid PROPUESTA:
 ```js
 "$": { // Raíz
     "Notroid": {
         "system": {
-            "config.json": [content, {metadata}]
+            // Archivos de sistema
+            "drivers": {
+                // Drivers (ej: video o audio)
+            }
         },
-        "apps": {}
+        "apps": {
+            // JSONs de apps
+        }
     },
     "home": {
         "user": {
@@ -26,16 +33,11 @@
 - Carpeta: Un Objeto (`{}`)
 - Archivo: Un Array  (`[content, {metadata}]`)
 
-### OJO CON ESTO:
-Si queremos añadir permisos a los archivos o añadirle metadatos (fecha de creación, tamaño, etc) tendremos dos opciones:
-1. Separar el archivo y los metadatos con un caracter unicode raro
-2. hacer los archivos un Array en el que "file[0]" sea el contenido y "file[1]" sea un Objeto con los metadatos
-
 ## Estructura de app Notroid
 ```js
-"MiApp": {
+"miapp": {
     manifest: {
-        id: "MiApp",
+        id: "miapp",
         name: "Mi App",
         icon: "https://placehold.co/150x150/008080/FFFFFF?text=Hola\\nMundo",
         categories: [],
@@ -43,7 +45,7 @@ Si queremos añadir permisos a los archivos o añadirle metadatos (fecha de crea
     },
     main: {
         entry: "MAIN",
-        toolbarTitle: "Épico, ¿Verdad?",
+        title: "Épico, ¿Verdad?",
         functions: {},
         lifecycle: {
             onCreate: ["SHOW_TOAST", "Bienvenido, $name"],
@@ -53,6 +55,15 @@ Si queremos añadir permisos a los archivos o añadirle metadatos (fecha de crea
         env: {
             "name": "12steve"
         }
+    },
+    window : {
+        width: "400px",
+        height: "200px",
+        draggable: true,
+        resizable: true,
+        fullscreen: false,     // No Toolbar
+        startState: "normal",  // normal/maximized
+        controls: true,        // [─][◻][✕]
     },
     screens: {
         "MAIN": [
@@ -66,20 +77,33 @@ Si queremos añadir permisos a los archivos o añadirle metadatos (fecha de crea
     }
 }
 ```
+---
 
-## Acciones:
-`SHOW_TOAST <text>`
-`NAVIGATE_TO <screen>`
+> Lo que tenga "[!]" es que no está implementado
+
+## Acciones (actions):
+> Sintaxis: ["OP", "args..."] o ["OP", ["OP", "args..."]] (array format 🔥)
+`SHOW_TOAST <text>`: Muestra un Toast (gráfico)
+`NAVIGATE_TO <screen>`: Navega a otra pantalla
+[!] `INSTALL_APP <json>`: Instala una app en "Notroid/system/apps"
+...
+
+## Comandos (NotShell):
+> Sintaxis: OP args...
+`LOG <msg>`: Imprime en consola (`console.log()`)
+`ECHO <msg>`: Imprime en terminal, la gráfica (solo funciona si `Notroid.state["videoMode"] === "text"`)
+`EXEC <filePath>`: Ejecuta un archivo con NotShell (`Notroid.executeNotShell()`)
+`ONERROR <cmds...>`: Ejecuta esa línea si la `errorFlag` está activada
+`BSOD <msg>`: (**admin**) Lanza un *BSOD* con un mensaje (`Notroid.BSOD()`)
+`VIDEOMODE <videoMode>`: (**admin**) Cambia el modo de video. Solo hay `text` y `graphic`.
+`RESOLUTION <width>-<height>`: (**admin**) Ajusta la resolución de la pantalla en formato CSS (`1024px`, `100%`, etc...). Solo funciona si `Notroid.state["videoMode"] === "graphic"`, no sabemos que hace windows cuando es en modo `text` XD
 ...
 
 ## Elementos:
 - `text`: Un texto, parrafo
-- `button`: Un botón tocable
+- `button`: Un botón tocable (obvio wtf)
 
 ### Atributos:
 - `type`: El tipo de elemento (arriba)
 - `text`: El contenido de texto
 - `action`: Acción que ejecutará al ser tocado
-
-## Dudas:
-- ¿Cómo se cargarán las apps? ¿Desde el .json real de Notroid o esos .json se cargan al FS fictisio de Notroid y de ahí se cargan?

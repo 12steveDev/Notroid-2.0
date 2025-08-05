@@ -4,11 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles.css">
+    <link rel="stylesheet" href="src/windows.css">
     <title>Notroid 2.0</title>
 </head>
 <body>
     <div id="terminal" contenteditable="false"></div>
-    <div id="desktop" class="hide">Hola Mundo Gráfico</div>
+    <div id="vga" class="hide">
+        <div class="window" id="wdw">
+            <div class="header">
+                <p>Titulo</p>
+                <button>─</button>
+                <button onclick="$('#wdw').classList.contains('maximized') ? $('#wdw').classList.remove('maximized') : $('#wdw').classList.add('maximized')">◻</button>
+                <button onclick="$('#wdw').classList.add('minimized')">✕</button>
+            </div>
+            <div class="content">
+                <p>Hola Mundo</p>
+            </div>
+        </div>
+    </div>
     <div id="bsod" class="hide">
         <div class="box">
             <h1>ꓽ(</h1>
@@ -17,6 +30,7 @@
     </div>
     <script src="src/utils/utils.js"></script>
     <script src="src/core/notroid.js"></script>
+    <script src="src/ui/windows.js"></script>
     <script src="src/core/terminal.js"></script>
     <script src="src/core/bios.js"></script>
     <script src="src/core/actions.js"></script>

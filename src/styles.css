@@ -3,13 +3,6 @@
     font-family: "BIOS";
     src: url("../assets/fonts/imb_vga8x16.ttf");
 }
-@keyframes blink {
-    0%, 100% {
-        opacity: 1;
-    } 50% {
-        opacity: 0;
-    }
-}
 * {
     box-sizing: border-box;
     margin: 0;
@@ -29,18 +22,11 @@ body {
     height: 100%;
     resize: none;
     background: #000000;
-    font-size: 20px;
+    font-size: 20.9px;
     border: none;
     color: #ffffff;
     padding: 10px;
     word-break: break-all;
-}
-#desktop {
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    font-family: "Segoe UI";
-    background-image: linear-gradient(#AB001E, #1E5C00, #005CAB);
 }
 #bsod {
     position: absolute;
@@ -68,4 +54,12 @@ body {
 }
 .hide {
     display: none !important;
+}
+#vga {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    background: #000000;
+} #vga * {
+    font-family: "Segoe UI";
 }
