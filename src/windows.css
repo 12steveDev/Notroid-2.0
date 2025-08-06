@@ -6,15 +6,19 @@
     color: #000000;
     border: 1px solid #444444;
     box-shadow: 0 0 10px -2px #000000;
-    min-width: 130px;
+    min-width: 150px;
     min-height: 50px;
     transition: transform 0.3s, opacity 0.3s;
 }
 .window .header {
     display: grid;
-    grid-template-columns: 1fr repeat(3, 30px);
+    grid-template-columns: 20px 1fr repeat(3, 30px);
     background: #008080;
     height: 25px;
+}
+.window .header img {
+    max-width: 20px;
+    margin: 2px;
 }
 .window .header button {
     width: 30px;
@@ -46,9 +50,33 @@
     font-size: 14px;
 }
 .window .content {
+    width: 100%;
+    height: calc(100% - 25px); /* 25px del .header */
     padding: 5px;
 }
-
+/* Elementos de ventanas */
+.window .content button {
+    height: 24px;
+    background: #f3f3f3;
+    border: 1.5px solid #ccc;
+    padding: 2px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.window .content button:hover {
+    border: 1.5px solid #0044cc;
+    background: #ddddee;
+}
+.window .content button:focus {
+    border: 1.5px solid #0044cc;
+}
+.window .content button:active {
+    background: #ddeeff;
+}
+.window .content p {
+    height: 24px;
+}
 /* Atributos de la ventana */
 .window.fullscreen {
     min-width: 50px;
@@ -57,14 +85,17 @@
 .window.fullscreen .header {
     display: none;
 }
+.window.fullscreen .content {
+    padding: 0;
+}
 .window.nocontrols button {
     display: none;
 }
 .window.maximized {
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
 }
 .window.minimized {
     opacity: 0;

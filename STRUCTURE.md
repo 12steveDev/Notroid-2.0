@@ -3,35 +3,33 @@
 📁 Notroid_2.0/
 ├── 📁 src/                      # Código fuente principal
 │   ├── 📁 core/                 # Lógica del sistema operativo
-│   │   ├── 📄 **actions.js**    # ¡El CORAZÓN de Notroid! (executeNotroid + acciones básicas)
-│   │   ├── 📄 fs.js             # Filesystem simulado (¡el alma del proyecto!)
-│   │   ├── 📄 apps.js           # Cargador/instalador de apps, INSTALL_APP()
-│   │   ├── 📄 executeOS.js      # Ejecutador de comandos a nivel de OS
-│   │   └── 📄 permissions.js    # Gestión de permisos (rwx, banan_access, etc.)
+│   │   ├── 🔗 notroid.js        # El OS. Creación de procesos, ejecuciones NotShell y ACTIONS (executeNotroid())
+│   │   ├── 🔗 fs.js             # Filesystem simulado (¡el alma del proyecto!)
+│   │   ├── 🔗 terminal.js       # Terminal antes de modo VGA
+│   │   └── 🔗 bios.js           # El startup de Notroid
 │   │
 │   ├── 📁 ui/
-│   │   ├── 📄 toasts.js         # SHOW_TOAST() (implementación real)
-│   │   ├── 📄 navigation.js     # NAVIGATE_TO(), GO_BACK()
-│   │   └── 📄 dialogs.js        # Alertas, permisos, etc
+│   │   └── 🔗 windows.js        # Expande la clase Notroid con método ".createWindowObj"
 │   │
-│   └── 📁 apps/                 # Apps del sistema (JSONs preinstalados)
-│       ├── 📄 calculator.json   # App: Calculadora
-│       ├── 📄 notes.json        # App: Bloc de Notas
-│       └── 📄 hitleros.json     # App: HitlerOS Simulator (🛩🗼🔥)
+│   ├── 📁 utils/                # Utiles globales
+│   │   └── 🔗 utils.js          # $() , $$() , sleep()
+│   │
+│   ├── 🔗 main.js               # Inicialización del OS (llama a la BIOS)
+│   ├── ✨ styles.css            # Estilos globales
+│   └── ✨ windows.css           # Estilos de ventanas
 │
 ├── 📁 assets/                   # Recursos estáticos
+│   ├── 📁 fonts/                # Fuentes de texto
+│   │   └── 🅰 ibm_vga8x16.ttf   # Fuente BIOS
+│   │
 │   ├── 📁 icons/                # Íconos de apps
-│   ├── 📁 sounds/               # Efectos de sonido (ej: BSOD.wav)
-│   └── 📁 wallpapers/           # Fondos de pantalla épicos
+│   └── 📁 sounds/               # Efectos de sonido (ej: BSOD.wav)
 │
-├── 📄 not.html                  # Punto de entrada
-├── 📄 main.js                   # Inicialización del OS
-├── 📄 styles.css                # Estilos globales (antes static/main.css)
+├── 🌍 not.html                  # Punto de entrada
 │
-├── 📑 README.md                 # Documentación épica
-├── 📑 CHANGELOG.md              # Historial de versiones (con humor)
-├── 📑 NOTES.md                  # Notas para mi
-├── 📑 STRUCTURE.md              # Estructura de archivos (este archivo w)
-├── 📑 CONTRIBUTING.md           # Guía para contribuir (ej: "manda un toast")
-└── 📑 TODO.md                   # Tareas pendientes (ej: "añadir BSOD() con sonido")
+├── ⬇ README.md                 # Documentación épica
+├── ⬇ CHANGELOG.md              # Historial de versiones (con humor)
+├── ⬇ NOTES.md                  # Notas para mi
+├── ⬇ STRUCTURE.md              # Estructura de archivos (este archivo w)
+└── ⬇ CONTRIBUTING.md           # Guía para contribuir (ej: "manda un toast")
 ```

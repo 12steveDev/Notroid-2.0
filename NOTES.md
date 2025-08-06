@@ -35,7 +35,7 @@
 
 ## Estructura de app Notroid
 ```js
-"miapp": {
+"miapp.napp": {
     manifest: {
         id: "miapp",
         name: "Mi App",
@@ -51,12 +51,14 @@
             onCreate: ["SHOW_TOAST", "Bienvenido, $name"],
             onPause: [], // Todavía en duda!!!, no se en qué momento se ejecutaría
             onDestroy: ["SHOW_TOAST", "Cerrando..."]
-        },
+                        },
         env: {
             "name": "12steve"
         }
     },
-    window : {
+    window: {
+        x: "25px",
+        y: "25px",
         width: "400px",
         height: "200px",
         draggable: true,
@@ -64,6 +66,7 @@
         fullscreen: false,     // No Toolbar
         startState: "normal",  // normal/maximized
         controls: true,        // [─][◻][✕]
+        singleInstance: false
     },
     screens: {
         "MAIN": [
@@ -107,3 +110,7 @@
 - `type`: El tipo de elemento (arriba)
 - `text`: El contenido de texto
 - `action`: Acción que ejecutará al ser tocado
+
+## Dudas:
+- En `Notroid.verifyApp()` debería solo devolver si tiene todos los malditos argumentos uno por uno o solo verifico los más importantes (como la `id`) y lo que falte lo autocompleta y devuelve?
+- ¿Cómo sería el manejo de errores en NotShell? Osea, ¿Con el "`ONERROR`" y la flag `errorFlag` es suficiente?

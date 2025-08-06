@@ -118,7 +118,7 @@ class BIOS {
         Terminal.writeln("Pasando control a NotroidOS...", "cyan", true);
         await sleep(1000);
         Terminal.clear();
-        const bootmgr = NotroidFS.read("Notroid/system/bootmgr.nsh");
+        const bootmgr = NotroidFS.read("Notroid/System64/bootmgr.nsh");
         if (bootmgr[0] !== 0){ // En caso de error
             Terminal.writeln("BOOTMGR no encontrado. Presiona Alt-F4 para reiniciar.", "red")
         } else {
