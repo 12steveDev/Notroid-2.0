@@ -8,6 +8,7 @@ Notroid.createWindowObj = function(appObj, pid){
     wdw.style.width = appObj.window?.width || "150px";
     wdw.style.height = appObj.window?.height || "50px";
     wdw.classList.add("window", "minimized");
+    if (appObj.window?.maximized) wdw.classList.add("maximized");
     // Encabezado
     if (!appObj.window?.fullscreen){
         const header = document.createElement("div");
@@ -79,13 +80,23 @@ Notroid.createWindowObj = function(appObj, pid){
                 case "button":
                     elem = document.createElement("button");
                     break;
+                case "img":
+                    elem = document.createElement("img");
+                    break;
                 default:
                     elem = document.createElement("p");
                     elem.textContent = `[elemento desconocido: ${elemObj.type}]`;
                     screen.appendChild(elem);
                     continue;
             }
-            elem.textContent = elemObj.text || "";
+            elem.textContent = Notroid.resolveValue(elemObj.text || "", appObj.main?.env || {});
+            if (elemObj.id) elem.id = `nid-win_${pid}-${elemObj.id}`; // IDs separadas por PID papá
+            if (elemObj.action) elem.onclick = () => Notroid.executeNotroid(pid, elemObj.action);
+            if (elemObj.width) elem.style.width = elemObj.width;
+            if (elemObj.height) elem.style.height = elemObj.height;
+            if (elemObj.color) elem.style.color = elemObj.color;
+            if (elemObj.background) elem.style.background = elemObj.background;
+            if (elemObj.src) elem.src = elemObj.src;
             screen.appendChild(elem);
         }
         content.appendChild(screen);
@@ -93,7 +104,7 @@ Notroid.createWindowObj = function(appObj, pid){
     wdw.appendChild(content);
     $("#vga").appendChild(wdw);
     wdw.classList.remove("minimized");
-    Notroid.navigateTo(pid, appObj.main?.entry)
+    Notroid.navigateTo(pid, appObj.main?.entry || "MAIN");
     return wdw;
 }
 Notroid.navigateTo = function(pid, screenId){
@@ -107,4 +118,9 @@ Notroid.navigateTo = function(pid, screenId){
             screen.classList.add("hide");
         }
     })
+}
+Notroid.getElemById = function(pid, id){
+    if (!Notroid._setResult(Notroid.getProcess(pid))) return;
+    const wdw = Notroid.lastResult[1];
+    return $(`nid-win_${pid}-${id}`);
 }

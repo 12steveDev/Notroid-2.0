@@ -1,3 +1,6 @@
+* {
+    box-sizing: border-box;
+}
 .window {
     position: absolute;
     top: 30px;
@@ -9,6 +12,7 @@
     min-width: 150px;
     min-height: 50px;
     transition: transform 0.3s, opacity 0.3s;
+    overflow: hidden;
 }
 .window .header {
     display: grid;
@@ -54,6 +58,10 @@
     height: calc(100% - 25px); /* 25px del .header */
     padding: 5px;
 }
+.window .content .screen {
+    width: 100%;
+    height: 100%;
+}
 /* Elementos de ventanas */
 .window .content button {
     height: 24px;
@@ -77,6 +85,10 @@
 .window .content p {
     height: 24px;
 }
+.window .content img {
+    width: 24px;
+    height: 24px;
+}
 /* Atributos de la ventana */
 .window.fullscreen {
     min-width: 50px;
@@ -87,6 +99,7 @@
 }
 .window.fullscreen .content {
     padding: 0;
+    height: 100%; /* Ya no hay que restar el espacio del .header */
 }
 .window.nocontrols button {
     display: none;

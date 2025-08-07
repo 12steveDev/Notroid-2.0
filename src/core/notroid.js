@@ -35,11 +35,11 @@ class Notroid {
             // appObj.manifest.icon;
             appObj.manifest.categories;
             appObj.manifest.permissions;
-            appObj.main.entry;
-            appObj.main.title;
+            // appObj.main.entry;
+            // appObj.main.title;
             appObj.main.functions;
-            appObj.main.lifecycle.onCreate;
-            appObj.main.lifecycle.onDestroy;
+            // appObj.main.lifecycle.onCreate;
+            // appObj.main.lifecycle.onDestroy;
             appObj.main.env;
             appObj.window.x;
             appObj.window.y;
@@ -48,7 +48,7 @@ class Notroid {
             appObj.window.draggable;
             appObj.window.resizable;
             appObj.window.fullscreen;
-            appObj.window.startState;
+            appObj.window.maximized;
             appObj.window.controls;
             appObj.screens;
             return true;
@@ -72,11 +72,9 @@ class Notroid {
             } else if (line.startsWith("ECHO ")){
                 Terminal.writeln(this.resolveValue(line.slice(4).trim()));
             } else if (line.startsWith("EXEC ")){
-                if (this._setResult(NotroidFS.read(this.resolveValue(line.slice(4).trim())))){
-                    this.executeNotShell(this.lastResult, admin);
-                }
+                this.executeNotShell(this.resolveValue(line.slice(4).trim()), admin);
             } else if (line.startsWith("ONERROR ")){
-                if (this.errorFlag) this.executeNotShell(line.slice(7).trim(), admin);
+                if (this.errorFlag) this.executeNotShell(this.resolveValue(line.slice(7).trim()), admin);
             } else if (line.startsWith("BSOD ") && admin){
                 this.BSOD(this.resolveValue(line.slice(4).trim()));
             } else if (line.startsWith("VIDEOMODE ") && admin){
@@ -100,31 +98,64 @@ class Notroid {
                     // TODO...
                 }
             } else if (line.startsWith("RUNAPP ")){
-                if (!this._setResult(NotroidFS.read(line.slice(6).trim()))) continue;
-                const appObj = JSON.parse(this.lastResult);
+                let appObj;
+                try {
+                    appObj = JSON.parse(this.resolveValue(line.slice(6).trim()));
+                } catch (e){
+                    this.errorFlag = true;
+                    this.lastResult = `La app está corrompida (JSON Error: '''${e.message}''')`;
+                    continue;
+                }
                 if (!this.verifyApp(appObj)){
                     this.errorFlag = true;
-                    this.lastResult = `La app '${line.split("/").pop()}' está corrompida o incompleta`;
+                    this.lastResult = `La app está incompleta (completa CICADA 3301 para ver detalles 𓆉)`;
                     continue;
                 }
                 const pid = this.createProcess(appObj.manifest.id);
                 this.createWindowObj(appObj, pid);
+                this.executeNotroid(pid, appObj.main?.lifecycle?.onCreate || []);
             } else if (line.startsWith("CLOSEAPP ")){ // OJO: No es lo mismo que KILL
                 const pid = line.slice(8).trim();
                 if (!this._setResult(this.getProcess(pid))) continue;
-                // TODO: Ejecutar appObj.lifecycle.onDestroy
+                this.executeNotroid(pid, this.lastResult[2].main?.lifecycle?.onDestroy || []);
                 this.executeNotShell(`KILL ${pid}`);
             } else if (line.startsWith("KILL ")){
                 const pid = line.slice(4).trim();
                 if (!this._setResult(this.getProcess(pid))) continue;
                 this.killProcess(pid);
+            } else if (line.startsWith("READ ")){
+                this._setResult(NotroidFS.read(this.resolveValue(line.slice(4).trim())));
             } else {
                 console.warn(`[executeNotShell] OP desconocido: ${line}`);
             }
         }
     }
-    static executeNotroid(windowId, actionArray){
-        //...
+    static executeNotroid(pid, actionArray){
+        console.log(`[executeNotroid] (PID: ${pid}) ${JSON.stringify(actionArray)}`);
+        if (!this._setResult(this.getProcess(pid))) return;
+        const appObj = this.lastResult[2];
+        if (actionArray.length === 0) return;
+        if (Array.isArray(actionArray[0])){ // ¿El OP es otra acción? Acciónes en cadena detectada
+            for (const arr of actionArray){
+                this.executeNotroid(pid, arr);
+            }
+        }
+        switch (actionArray[0]){
+            case "NAVIGATE_TO":
+                this.navigateTo(pid, actionArray[1]);
+                break;
+            case "SHOW_TOAST":
+                alert(`[Toast de bajo presupuesto]:\n${this.resolveValue(actionArray[1], appObj.main?.env || {})}`);
+                break;
+            case "CLOSE_APP":
+                this.executeNotShell(`CLOSEAPP ${pid}`);
+                break;
+            case "READ":
+                this.executeNotShell(`READ ${this.resolveValue(actionArray[1], appObj.main?.env || {})}`);
+                break;
+            default:
+                console.warn(`[executeNotroid] ACTION desconocida: ${actionArray[0]}`);
+        }
     }
     // ===== Processes ===== //
     static getNextPid(){
@@ -143,7 +174,6 @@ class Notroid {
     static killProcess(pid){
         if (!this._setResult(this.getProcess(pid))) return;
         const r = this.getProcess(pid)[1];
-        const process = r[0];
         const wdw = r[1];
         wdw.classList.add("minimized");
         setTimeout(()=>{
@@ -154,9 +184,9 @@ class Notroid {
         return pid;
     }
     static getProcess(tpid){
-        // [PROCESS, WINDOW] //
+        // [PROCESS, WINDOW, ENV] //
         if (!isDigit(tpid)){
-            return [3, `PID inválido: '${tpid}'`];
+            return [5, `PID inválido: '${tpid}'`];
         }
         const pid = Number(tpid);
         const process = this.processes[pid];
@@ -167,6 +197,15 @@ class Notroid {
         if (!wdw){
             return [2, `No se encontró la ventana con WindowId 'win_${pid}' (PID: ${pid})`];
         }
-        return [0, [process, wdw]];
+        const appObjStr = this._setResult(NotroidFS.read(`Notroid/Apps/${process.appId}.napp`));
+        if (!appObjStr){
+            return [3, `No se encontró la NotApp con appId '${process.appId}' (PID: ${pid})`];
+        }
+        try {
+            const appObj = JSON.parse(this.lastResult);
+            return [0, [process, wdw, appObj]];
+        } catch (e){
+            return [4, `La app '${process.appId}' está corrupta (PID: ${pid}) (JSON Error: '''${e.message}''')`];
+        }
     }
 }

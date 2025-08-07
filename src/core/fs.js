@@ -3,9 +3,12 @@ let savedFS = localStorage.getItem("NotroidFS");
 const defaultFS = {
     "$": { // Raíz
         "Notroid": {
+            "System": {
+                "launcher.png": ['data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="skyblue"/><circle cx="100" cy="100" r="80" fill="red"/></svg>',  { created: new Date().toISOString(), modified: new Date().toISOString() }]
+            },
             "System64": {
-                "bootmgr.nsh": ["ECHO bootmgr cargado\nLOG [OS] BOOTMGR inicializado\nEXEC Notroid/System64/notkrnl.nsh\nONERROR BSOD Error: No se pudo iniciar Notroid. Falta el archivo /Notroid/System64/notkrnl.nsh", { created: new Date().toISOString(), modified: new Date().toISOString() }],
-                "notkrnl.nsh": ["LOG [OS] NOTKRNL inicializado\nEXEC Notroid/System64/drivers/display.sys\nRUNAPP Notroid/launcher.napp\nRUNAPP Notroid/Apps/miapp.napp\nONERROR LOG Error: ${__lastResult}", { created: new Date().toISOString(), modified: new Date().toISOString() }],
+                "bootmgr.nsh": ["ECHO bootmgr cargado\nLOG [OS] BOOTMGR inicializado\nREAD Notroid/System64/notkrnl.nsh\nONERROR BSOD Error: No se pudo iniciar Notroid. Falta el archivo /Notroid/System64/notkrnl.nsh\nEXEC ${__lastResult}", { created: new Date().toISOString(), modified: new Date().toISOString() }],
+                "notkrnl.nsh": ["LOG [OS] NOTKRNL inicializado\nREAD Notroid/System64/drivers/display.sys\nEXEC ${__lastResult}\nREAD Notroid/launcher.napp\nRUNAPP ${__lastResult}\nREAD Notroid/Apps/miapp.napp\nRUNAPP ${__lastResult}\nONERROR LOG Error al cargar app de inicio: ${__lastResult}", { created: new Date().toISOString(), modified: new Date().toISOString() }],
                 "drivers": {
                     "display.sys": ["LOG [OS] DISPLAY inicializado\n// Cambiar modo de video a gráfico\nVIDEOMODE graphic\nRESOLUTION 100%-100%", { created: new Date().toISOString(), modified: new Date().toISOString() }]
                 },
@@ -24,9 +27,8 @@ const defaultFS = {
                         title: "Épico, ¿Verdad?",
                         functions: {},
                         lifecycle: {
-                            onCreate: ["SHOW_TOAST", "Bienvenido, $name"],
-                            onPause: [], // Todavía en duda!!!, no se en qué momento se ejecutaría
-                            onDestroy: ["SHOW_TOAST", "Cerrando..."]
+                            onCreate: ["LOG", "Bienvenido, ${name}"],
+                            onDestroy: ["LOG", "Cerrando..."]
                         },
                         env: {
                             "name": "12steve"
@@ -39,22 +41,22 @@ const defaultFS = {
                         height: "200px",
                         draggable: true,
                         resizable: true,
-                        fullscreen: false,     // No Toolbar
-                        startState: "normal",  // normal/maximized
-                        controls: true,        // [─][◻][✕]
-                        singleInstance: false
+                        fullscreen: false,
+                        maximized: false,
+                        controls: true
                     },
                     screens: {
                         "MAIN": [
-                            {type: "text", text: "Hola Mundo"},
+                            {type: "text", id: "texto", text: "Hola Mundo"},
+                            {type: "button", id: "miboton", background: "#f00", text: "Jejeje", action: [["SHOW_TOAST", "Hola Podre"], ["SHOW_TOAST", "Hola Rico jaja"], ["CLOSE_APP"]]},
                             {type: "button", text: "Detalles", action: ["NAVIGATE_TO", "Details"]}
                         ],
                         "Details": [
                             {type: "text", text: "Detalles..."},
-                            {type: "button", text: "...", action: ["SHOW_TOAST", "Has sido un gran explorador, pequeño bro 🗿🔥"]}
+                            {type: "button", text: "...", action: ["SHOW_TOAST", "Has sido un gran explorador, pequeño bro 🗿🔥 (${name})"]}
                         ]
                     }
-                }), { created: new Date().toISOString(), modified: new Date().toISOString() }]
+                }), { created: new Date().toISOString(), modified: new Date().toISOString() }],
             },
             "launcher.napp": [JSON.stringify({
                 manifest: {
@@ -77,18 +79,17 @@ const defaultFS = {
                 window: {
                     x: "0",
                     y: "0",
-                    width: "100%",
-                    height: "100%",
+                    width: "20px",
+                    height: "100px",
                     draggable: false,
                     resizable: true,
-                    fullscreen: true,     // No Toolbar
-                    startState: "normal",  // normal/maximized
-                    controls: true,        // [─][◻][✕]
-                    singleInstance: false
+                    fullscreen: true,
+                    maximized: true,
+                    controls: false
                 },
                 screens: {
                     "Desktop": [
-                        {type: "img", text: "Hola Mundo"}
+                        {type: "img", width: "100%", height: "100%", src: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="skyblue"/><circle cx="100" cy="100" r="80" fill="red"/></svg>'}
                     ]
                 }
             }), { created: new Date().toISOString(), modified: new Date().toISOString() }]
@@ -96,7 +97,7 @@ const defaultFS = {
         "home": {
             "user": {
                 "documents": {},
-                "downloads": {}
+                "downloads": {},
             }
         },
         "README.txt": ["Bienvenido a Notroid, mortal promedio. Intenta encontrar los eastereggs (ninguno) dentro de este OS con 1945 demandas de Google! :)", { created: new Date().toISOString(), modified: new Date().toISOString() }]

@@ -110,7 +110,12 @@
 - `type`: El tipo de elemento (arriba)
 - `text`: El contenido de texto
 - `action`: Acción que ejecutará al ser tocado
+- `id`: ID encapsulada en ese PID (formato `nid-win_{pid}-{id}`)
 
 ## Dudas:
 - En `Notroid.verifyApp()` debería solo devolver si tiene todos los malditos argumentos uno por uno o solo verifico los más importantes (como la `id`) y lo que falte lo autocompleta y devuelve?
 - ¿Cómo sería el manejo de errores en NotShell? Osea, ¿Con el "`ONERROR`" y la flag `errorFlag` es suficiente?
+
+## Reglas en código (las necesito)
+1. Los argumentos de las OPs (NotShell) o ACTIONS deben de ser valores directos. Ninguna podrá leer archivos, de eso se encargará el script leyendo un archivo y ejecutando la acción con `__lastResult` (el archivo leído). Ejemplo: `EXEC Notroid/init.nsh` ==> `READ Notroid/init.nsh\nEXEC ${__lastResult}`
+2. TODOS los argumentos deben haber pasado por "resolveValue"
