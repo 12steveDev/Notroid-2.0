@@ -1,128 +1,115 @@
 // src/core/bios.js
 class BIOS {
-    static dedicatories = [
-        "Linus Torvalds",    // Creador de Linux (el kernel más usado del mundo)
-        "Guido Van Rossum",  // Creador de Python (bendito sea el 🐍)
-        "Microsoft",         // Windows, Office, Xbox, Azure (todo el combo 💻)
-        "Google",            // Android, Chrome, buscador, Gmail, etc
-        "OpenAI",            // ChatGPT, DALL·E, Sora (y tu bro actual 🗿🔥)
-        "Dennis Ritchie",    // Creador del lenguaje C, padre de casi todo
-        "Ken Thompson",      // Co-creador de UNIX y del lenguaje B
-        "Richard Stallman",  // Fundador del movimiento GNU/Software Libre
-        "Bjarne Stroustrup", // Creador de C++ (tu CPU tiembla cuando lo compilas)
-        "Grace Hopper",      // Pionera en COBOL, inventó el primer compilador
-        "Alan Turing",       // Padre de la computación teórica (la Máquina de Turing)
-        "Donald Knuth",      // Autor de "The Art of Computer Programming" (la biblia del dev)
-        "Steve Jobs",        // Fundador de Apple, iPhone, Mac (NO Microsoft JAJA)
-        "Bill Gates",        // Fundador de Microsoft, el tío del Windows
-        "Elon Musk",         // PayPal, Tesla, SpaceX, xAI (y shitposts en X)
-        "Mark Zuckerberg",   // Fundador de Facebook (Meta)
-        "IBM",               // Mainframes, PCs, y papá del PC de escritorio
-        "Apple",             // Macs, iPhones, iPods, AirPods (y precios de riñón 🍎)
-        "Mozilla",           // Firefox (y Netscape en su tiempo)
-        "Red Hat",           // Empresa top en Linux empresarial (RHEL)
-        "Canonical",         // Creador de Ubuntu
-        "Oracle",            // Dueños de Java y bases de datos mamadísimas
-        "Sun Microsystems",  // Creadores de Java y MySQL (RIP, los compró Oracle)
-        "JetBrains",         // IDEs épicos: IntelliJ, PyCharm, CLion (y las fuentes 🔥)
-        "Anders Hejlsberg",  // Creador de Turbo Pascal, Delphi y C#
-        "Brian Kernighan",   // Coautor del C original y pionero de UNIX
-        "Tim Berners-Lee",   // Inventor de la World Wide Web (WWW)
-        "Larry Page",        // Cofundador de Google (PageRank)
-        "Sergey Brin",       // Cofundador de Google
-        "Ada Lovelace",      // Primera programadora de la historia (siglo XIX)
-        "Terry A. Davis",    // Creador de TempleOS (la obra sagrada del código 🙏🗿)
-        "Heil Hi"            // 🙋‍♂️🇩🇪
-    ]
-
     static async boot(){
-        if (!sessionStorage.getItem("firstBoot")){
-            Terminal.writeln("=== [ NotBIOS 1.0.0 ] ===", "purple", true);
-            if (new Date().getHours() > 22 || new Date().getHours() < 6) { // Noche
-                Terminal.writeln("¿Qué haces despierto bro?", "gray")
-                await sleep(1500);
-                Terminal.writeln("Pos no eres el único, los servidores están saturados 🔥🔥🔥", "gray")
-                await sleep(6500)
-            }
-            if (new Date().getDate() === 11 && new Date().getMonth() === 8){ // JAJAJAJ EL 11 DE SEPTIEMBRE LO EJECUTO 🗣🙋‍♂️🛩🗼🔥
-                Terminal.writeln("⚠️ Hoy no se recomienda hacer operaciones ALU. (motivo: 🛩🗼🔥)", "gray");
-            }
-            await sleep(1000);
-            
-            // 1. Verificaciones de hardware
-            Terminal.write("Verificando RAM... ");
-            await sleep(randint(200, 700));
-            Terminal.writeln(`OK (${randint(255, 256)}MB virtuales)`, "green");
+        // == Simula el booteo de la PC, osea, la BIOS == //
+        if (!sessionStorage.getItem("isFirstBoot")){ // ¿Es la primera vez que el usuario bootea en esta sesión?
             await sleep(200);
-            Terminal.write("Verificando HDD... ");
-            await sleep(randint(200, 700));
-            Terminal.writeln(`OK (${randint(0,1)?"1TB":"1024MB"} virtuales)`, "green");
+            Terminal.writeln("Notroid BIOS Version 9.11 (C) 2001", "fuchsia");
             await sleep(200);
-            Terminal.write("Verificando CPU (XD?)... ");
-            await sleep(randint(200, 700));
-            Terminal.writeln("OK (Intel 0i)", "green");
+            Terminal.writeln("CPU: Intel(R) Pentium(R) 4 CPU 2.40GHz");
             await sleep(200);
-            Terminal.write("Verificando GPU... ");
-            await sleep(randint(200, 700));
-            Terminal.writeln(`OK (${randint(0,1)?"Envidia":"Paint"})`, "green");
+            Terminal.write("Memory Testing: 0");
+            await sleep(400);
+            // Memory Testing como promesa
+            await new Promise((resolve)=>{
+                let mem = 0;
+                let interval = setInterval(()=>{
+                    mem += 1024; // 1MB
+                    if (mem < 524288){
+                        Terminal.overwrite(`Memory Testing: ${mem}K`);
+                    } else {
+                        Terminal.overwriteln(`Memory Testing: ${mem}K OK`, "lime");
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 5);
+            });
+            await sleep(400);
+            Terminal.writeln("IDE Channel 0 Master:  ST38001A 80.0GB");
             await sleep(200);
-            Terminal.write("Verificando Motherboard... ");
-            await sleep(randint(200, 700));
-            Terminal.writeln("OK (caja de cartón)", "green");
+            Terminal.writeln("IDE Channel 0 Slave:   None");
             await sleep(200);
-            Terminal.write("Verificando Usuario... ");
-            await sleep(randint(200, 700));
-            Terminal.writeln("OK (alguien con mucho tiempo libre)", "green");
+            Terminal.writeln("IDE Channel 1 Master:  HL-DT-ST DVDRAM GSA-4167B");
             await sleep(200);
-            Terminal.write("Verificando Fecha... ");
+            Terminal.writeln("IDE Channel 1 Slave:   None");
+            await sleep(200);
+            Terminal.writeln("USB Controllers Initialized. 2 Devices Found");
+            await sleep(200);
+            Terminal.write("Detecting Primary Master...");
             await sleep(100);
-            Terminal.writeln("OK (9-11-2001)", "green");
+            Terminal.writeln("    ST380011A", "gray");
             await sleep(100);
-            Terminal.write("Verificando ALU... ");
+            Terminal.write("Detecting Primary Slave...");
             await sleep(100);
-            Terminal.writeln("OK (9+11=🛩🗼🔥)", "green");
+            Terminal.writeln("     None", "gray");
             await sleep(100);
-            Terminal.writeln("=== [ Hecho ] ===", "green", true)
-            await sleep(500);
-            
-            // 2. Bootear desde disco
+            Terminal.write("Detecting Secondary Master...");
+            await sleep(100);
+            Terminal.writeln("  HL-DT-ST DVDRAM GSA-4167B", "gray");
+            await sleep(100);
+            Terminal.write("Detecting Secondary Slave...");
+            await sleep(100);
+            Terminal.writeln("   None", "gray");
+            await sleep(400);
+
+            // Setup Menu y Boot Menu
+            Terminal.writeln("")
+            Terminal.writeln("Press DEL to enter SETUP, F12 for Boot Menu...");
+            await sleep(1500);
             Terminal.clear();
-            Terminal.writeln("Buscando boot sector válido en HDD... ");
-            await sleep(randint(1500, 4000));
-            Terminal.writeln("Boot sector válido encontrado!");
-            await sleep(400);
-            Terminal.write("Nombre: ");
-            await sleep(400);
-            Terminal.writeln("NotroidOS", "green");
-            await sleep(400);
-            Terminal.write("Autor: ");
-            await sleep(400);
-            Terminal.writeln("12steve", "green");
-            await sleep(400);
-            Terminal.write("Requisitos: ");
-            await sleep(400);
-            Terminal.writeln("Que la PC encienda (opcional)", "green");
-            await sleep(400);
-            Terminal.writeln("Dedicatorias:");
-            await sleep(400);
-            for (const d of this.dedicatories){
-                Terminal.writeln(`- ${d}`);
-                await sleep(100);
-            }
-            sessionStorage.setItem("firstBoot", "true");
+            await sleep(500);
+
+            // Buscar dispositio booteable
+            Terminal.writeln("Verifying DMI Pool Data...");
+            await sleep(500);
+            Terminal.clear();
+            await sleep(250);
+            Terminal.write("Booting from CD... <cursor>");
+            await sleep(1500);
+            Terminal.overwriteln("Booting from CD:", "red");
+            await sleep(500);
+            Terminal.write("Booting from Hard Disk... <cursor>");
+            await sleep(1500);
+            Terminal.overwriteln("Booting from Hard Disk...");
+            await sleep(500);
+            Terminal.write("Reading Boot Sector from Drive 80h... <cursor>");
+            await sleep(1500);
+            Terminal.overwriteln("Reading Boot Sector from Drive 80h...");
+            await sleep(500);
+            Terminal.write("Jumping to Bootloader @ 0x7C00... <cursor>", "aqua");
+            await sleep(1500);
+            sessionStorage.setItem("isFirstBoot", "true");
         }
-        // 3. Transferir control al sistema
-        sleep = ()=>{}
-        Terminal.clear()
-        await sleep(1000);
-        Terminal.writeln("Pasando control a NotroidOS...", "cyan", true);
-        await sleep(1000);
         Terminal.clear();
-        const bootmgr = NotroidFS.read("Notroid/System64/bootmgr.nsh");
-        if (bootmgr[0] !== 0){ // En caso de error
-            Terminal.writeln("BOOTMGR no encontrado. Presiona Alt-F4 para reiniciar.", "red")
-        } else {
-            Notroid.executeNotShell(bootmgr[1], true);
-        }
+        await sleep(200);
+        cpu.run();
     }
 }
+
+`idea
+[00.2s] [nombre] BIOS Version 1.23 (C) [año] [nombre]
+[00.3s] CPU: Intel(R) Pentium(R) 4 CPU 2.40GHz
+[00.5s] Memory Testing:  524288K OK
+[00.7s] IDE Channel 0 Master: ST380011A 80.0GB
+[00.9s] IDE Channel 0 Slave:   None
+[01.1s] IDE Channel 1 Master: HL-DT-ST DVDRAM GSA-4167B
+[01.3s] IDE Channel 1 Slave:   None
+[01.5s] USB Controllers Initialized. 2 Devices Found
+[01.6s] Detecting Primary Master...
+[01.8s]   ST380011A
+[02.0s] Detecting Primary Slave...
+[02.2s]   None
+[02.4s] Detecting Secondary Master...
+[02.6s]   HL-DT-ST DVDRAM GSA-4167B
+[02.8s] Detecting Secondary Slave...
+[03.0s]   None
+
+[03.2s] Press DEL to enter SETUP, F12 for Boot Menu
+
+[03.6s] Verifying DMI Pool Data...
+[03.9s] Boot from CD: _
+[04.2s] Boot from Hard Disk...
+
+[04.6s] Reading Boot Sector from Drive 80h...
+[05.0s] Jumping to Bootloader @ 0x7C00
+`

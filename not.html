@@ -1,27 +1,21 @@
+<!-- not.html -->
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles.css">
-    <link rel="stylesheet" href="src/windows.css">
     <title>Notroid 2.0</title>
 </head>
 <body>
-    <div id="terminal" contenteditable="false"></div>
-    <div id="vga" class="hide"></div>
-    <div id="bsod" class="hide">
-        <div class="box">
-            <h1>ꓽ(</h1>
-        <p id="bsodPError"></p>
-        </div>
-    </div>
+    <!-- Terminal || VIDEOMODE = text -->
+    <pre id="terminal" contenteditable="false"></pre>
+
+    <!-- Scripts -->
     <script src="src/utils/utils.js"></script>
-    <script src="src/core/notroid.js"></script>
     <script src="src/core/terminal.js"></script>
+    <script src="src/core/cpu.js"></script>
     <script src="src/core/bios.js"></script>
-    <script src="src/core/fs.js"></script>
-    <script src="src/ui/windows.js"></script>
     <script src="src/main.js"></script>
 </body>
 </html>

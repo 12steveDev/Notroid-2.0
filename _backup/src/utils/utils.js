@@ -15,6 +15,3 @@ function isDigit(str) {
     str = String(str);
     return [...str].every(c => c >= '0' && c <= '9');
 }
-function hex(int, digits=2){
-    return "0x" + int.toString(16).padStart(digits, "0").toUpperCase();
-}

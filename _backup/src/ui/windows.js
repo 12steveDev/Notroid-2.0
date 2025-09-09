@@ -72,31 +72,7 @@ Notroid.createWindowObj = function(appObj, pid){
         screen.classList.add("screen", "hide");
         screen.setAttribute("data-screen", screenId);
         for (const elemObj of appObj.screens[screenId]){
-            let elem;
-            switch (elemObj.type){
-                case "text":
-                    elem = document.createElement("p");
-                    break;
-                case "button":
-                    elem = document.createElement("button");
-                    break;
-                case "img":
-                    elem = document.createElement("img");
-                    break;
-                default:
-                    elem = document.createElement("p");
-                    elem.textContent = `[elemento desconocido: ${elemObj.type}]`;
-                    screen.appendChild(elem);
-                    continue;
-            }
-            elem.textContent = Notroid.resolveValue(elemObj.text || "", appObj.main?.env || {});
-            if (elemObj.id) elem.id = `nid-win_${pid}-${elemObj.id}`; // IDs separadas por PID papá
-            if (elemObj.action) elem.onclick = () => Notroid.executeNotroid(pid, elemObj.action);
-            if (elemObj.width) elem.style.width = elemObj.width;
-            if (elemObj.height) elem.style.height = elemObj.height;
-            if (elemObj.color) elem.style.color = elemObj.color;
-            if (elemObj.background) elem.style.background = elemObj.background;
-            if (elemObj.src) elem.src = elemObj.src;
+            const elem = Notroid._parseElem(elemObj, pid)
             screen.appendChild(elem);
         }
         content.appendChild(screen);
@@ -120,7 +96,42 @@ Notroid.navigateTo = function(pid, screenId){
     })
 }
 Notroid.getElemById = function(pid, id){
+    console.log(`[getElemById] ID: ${id} | RealID: nid-win_${pid}-${id} (PID: ${pid})`)
     if (!Notroid._setResult(Notroid.getProcess(pid))) return;
     const wdw = Notroid.lastResult[1];
-    return $(`nid-win_${pid}-${id}`);
+    return $(`#nid-win_${pid}-${id}`);
+}
+Notroid._parseElem = function(elemObj, pid){
+    let elem;
+    switch (elemObj.type){
+        case "text":
+            elem = document.createElement("p");
+            break;
+        case "button":
+            elem = document.createElement("button");
+            break;
+        case "img":
+            elem = document.createElement("img");
+            break;
+        case "list":
+            elem = document.createElement("div");
+            if (elemObj.format === "grid"){
+                elem.style.display = "grid";
+                elem.style.gridTemplateColumns = `repeat(${elemObj.columns || 1}, 1fr)`
+            }
+            break;
+        default:
+            elem = document.createElement("p");
+            elem.textContent = `[elemento desconocido: ${elemObj.type}]`;
+            return elem;
+    }
+    elem.textContent = Notroid.resolveValue(elemObj.text || "", pid);
+    if (elemObj.id) elem.id = `nid-win_${pid}-${elemObj.id}`; // IDs separadas por PID papá
+    if (elemObj.action) elem.onclick = () => Notroid.executeNotroid(pid, elemObj.action);
+    if (elemObj.width) elem.style.width = elemObj.width;
+    if (elemObj.height) elem.style.height = elemObj.height;
+    if (elemObj.color) elem.style.color = elemObj.color;
+    if (elemObj.background) elem.style.background = elemObj.background;
+    if (elemObj.src) elem.src = elemObj.src;
+    return elem
 }

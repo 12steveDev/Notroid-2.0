@@ -30,6 +30,5 @@
 ├── ⬇ README.md                 # Documentación épica
 ├── ⬇ CHANGELOG.md              # Historial de versiones (con humor)
 ├── ⬇ NOTES.md                  # Notas para mi
-├── ⬇ STRUCTURE.md              # Estructura de archivos (este archivo w)
-└── ⬇ CONTRIBUTING.md           # Guía para contribuir (ej: "manda un toast")
+└── ⬇ STRUCTURE.md              # Estructura de archivos (este archivo w)
 ```

@@ -3,6 +3,11 @@ let savedFS = localStorage.getItem("NotroidFS");
 const defaultFS = {
     "$": { // Raíz
         "Notroid": {
+            "data": {
+                "miapp": {
+                    "test.txt": [JSON.stringify(["Python", "Javascript"]), { created: new Date().toISOString(), modified: new Date().toISOString() }]
+                }
+            },
             "System": {
                 "launcher.png": ['data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="200" height="200" fill="skyblue"/><circle cx="100" cy="100" r="80" fill="red"/></svg>',  { created: new Date().toISOString(), modified: new Date().toISOString() }]
             },
@@ -31,7 +36,8 @@ const defaultFS = {
                             onDestroy: ["LOG", "Cerrando..."]
                         },
                         env: {
-                            "name": "12steve"
+                            "name": "12steve",
+                            "dataFile": "Notroid/data/miapp/test.txt"
                         }
                     },
                     window: {
@@ -47,21 +53,22 @@ const defaultFS = {
                     },
                     screens: {
                         "MAIN": [
-                            {type: "text", id: "texto", text: "Hola Mundo"},
-                            {type: "button", id: "miboton", background: "#f00", text: "Jejeje", action: [["SHOW_TOAST", "Hola Podre"], ["SHOW_TOAST", "Hola Rico jaja"], ["CLOSE_APP"]]},
+                            {type: "text", text: "Hola Mundo"},
+                            {type: "button", background: "#f00", color: "#fff", text: "Jejeje", action: [["SHOW_TOAST", "Hola Pobre"], ["SHOW_TOAST", "Hola Rico jaja"], ["CLOSE_APP"]]},
                             {type: "button", text: "Detalles", action: ["NAVIGATE_TO", "Details"]}
                         ],
                         "Details": [
-                            {type: "text", text: "Detalles..."},
-                            {type: "button", text: "...", action: ["SHOW_TOAST", "Has sido un gran explorador, pequeño bro 🗿🔥 (${name})"]}
+                            {type: "button", text: "<-", action: ["NAVIGATE_TO", "MAIN"]},
+                            {type: "text", id: "specText", text: "Detalles..."},
+                            {type: "button", text: "...", action: [["LOAD_FILE", "${dataFile}", "result"], ["SET_TEXT", "specText", "${result}...", {type: "jaja", text: "bro"}]]}
                         ]
                     }
                 }), { created: new Date().toISOString(), modified: new Date().toISOString() }],
             },
             "launcher.napp": [JSON.stringify({
                 manifest: {
-                    id: "miapp",
-                    name: "Mi App",
+                    id: "launcher",
+                    name: "Notroid Launcher",
                     icon: "https://placehold.co/150x150/008080/FFFFFF?text=Hola\\nMundo",
                     categories: [],
                     permissions: []
@@ -74,14 +81,16 @@ const defaultFS = {
                         onCreate: [],
                         onDestroy: []
                     },
-                    env: {}
+                    env: {
+                        "whats": "Notroid/System/launcher.png"
+                    }
                 },
                 window: {
                     x: "0",
                     y: "0",
-                    width: "20px",
-                    height: "100px",
-                    draggable: false,
+                    width: "400px",
+                    height: "200px",
+                    draggable: true,
                     resizable: true,
                     fullscreen: true,
                     maximized: true,
@@ -141,6 +150,9 @@ NotroidFS.write = function(path, data){
     }
     return [2, `El nombre '${fname}' pertenece a una carpeta`];
 },
+NotroidFS.list = function(path, filter=""){
+    return [0, Object.keys(NotroidFS._path(path)).filter(dir => dir.endsWith(filter))];
+}
 NotroidFS.rm = function(path){ // jejeje, ¿como que huele a "rm -rf /" verdad?
     console.log(`[NotroidFS][rm] ${path}`);
     if (path === "/"){
@@ -162,6 +174,7 @@ NotroidFS.rm = function(path){ // jejeje, ¿como que huele a "rm -rf /" verdad?
     return [0, fname];
 }
 
+/* Ignorar: */
 /*
 TODO: Hacer que la carpeta Notroid de verdad sirva para algo (para que al borrarla dañe de verdad el sistema)
 
