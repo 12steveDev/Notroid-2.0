@@ -82,34 +82,7 @@ class BIOS {
         }
         Terminal.clear();
         await sleep(200);
+        cpu.regs.PC = 0x7C00;
         cpu.run();
     }
 }
-
-`idea
-[00.2s] [nombre] BIOS Version 1.23 (C) [año] [nombre]
-[00.3s] CPU: Intel(R) Pentium(R) 4 CPU 2.40GHz
-[00.5s] Memory Testing:  524288K OK
-[00.7s] IDE Channel 0 Master: ST380011A 80.0GB
-[00.9s] IDE Channel 0 Slave:   None
-[01.1s] IDE Channel 1 Master: HL-DT-ST DVDRAM GSA-4167B
-[01.3s] IDE Channel 1 Slave:   None
-[01.5s] USB Controllers Initialized. 2 Devices Found
-[01.6s] Detecting Primary Master...
-[01.8s]   ST380011A
-[02.0s] Detecting Primary Slave...
-[02.2s]   None
-[02.4s] Detecting Secondary Master...
-[02.6s]   HL-DT-ST DVDRAM GSA-4167B
-[02.8s] Detecting Secondary Slave...
-[03.0s]   None
-
-[03.2s] Press DEL to enter SETUP, F12 for Boot Menu
-
-[03.6s] Verifying DMI Pool Data...
-[03.9s] Boot from CD: _
-[04.2s] Boot from Hard Disk...
-
-[04.6s] Reading Boot Sector from Drive 80h...
-[05.0s] Jumping to Bootloader @ 0x7C00
-`

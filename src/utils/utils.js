@@ -18,3 +18,20 @@ function isDigit(str) {
 function hex(int, digits=2){
     return "0x" + int.toString(16).padStart(digits, "0").toUpperCase();
 }
+function ord(char){
+    return char.charCodeAt(0);
+}
+function toSigned8(byte){
+    return (byte << 24) >> 24;
+}
+function toSigned16(word){
+    return (word << 16) >> 16;
+}
+function parity(byte){
+    // == Para actualizar PF (Parity Flag) de la CPU == //
+    let count = 0;
+    for(let i = 0; i < 8; i++){
+        if (byte & (1 << i)) count++;
+    }
+    return (count % 2 === 0) ? 1 : 0;
+}
