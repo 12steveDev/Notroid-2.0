@@ -19,25 +19,29 @@ Los mismos básicos de `assembly` (`AX`, `BX`, `CX` y `DX`) y `PC` como **Progra
 
 ### Interrupciones BIOS:
 - `0x00`: Cambia el modo de video.
-- - `AX`: El modo de video.
+- - `ax`: El modo de video.
 - - - `0x7C00`: Cambia a modo `text`.
 - - - `0xB800`: Cambia a modo `vga`.
+- `0x01`: Limpia la Terminal.
 - `0x10`: Imprime un caracter.
-- - `AL`: El caracter a imprimir.
+- - `al`: El caracter a imprimir.
+- `0x20`: Leer archivo y cargarlo en RAM.
+- - `ax`: Longitud máxima a leer.
+- - `bx`: Dirección RAM dónde cargar el archivo.
+- - `dx`: Puntero absoluto a la cadena de la ruta (la cadena debe terminar en `0x00`).
 
 ---
 
-## Booteo de Notroid:
+## Booteo de Notroid: (falta actualizar, peren un ratito)
 ```mermaid
 graph TD
 A[BIOS] -- Imprimir mensajes fakes --> B[Buscar archivo **'Notroid/System64/bootmgr.sys'**] --> C{¿Existe?}
-C -- Si --> D[[¿Notroid tiene memoria simulada?]]
+C -- Si --> D[Cargar bytes de *bootmgr.sys* en memoria *0x7C00* y ejecutar]
 C -- No --> E[Imprimir en Terminal que no existe BOOTMGR]
-D -- Si --> F[Cargar en memoria los bytes de BOOTMGR y ejecutarloss con la CPU]
-D -- No --> G[Pasar los bytes de BOOTMGR como argumento a la CPU y ejecutarlos]
+D --> F[se ejecutan notkrnl.sys y etc etc]
 ```
 
 ---
 
 ## Preguntas
-- ¿Debo añadir memoria simulada, y en vez de pasar los bytes por ejecutar a la CPU mejor cargo las instrucciones en memoria y solamente ejecutar esa parte de la memoria?
+- *Nothing here...*
