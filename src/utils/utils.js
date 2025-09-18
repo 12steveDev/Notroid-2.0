@@ -27,11 +27,9 @@ function toSigned8(byte){
 function toSigned16(word){
     return (word << 16) >> 16;
 }
-function parity(byte){
-    // == Para actualizar PF (Parity Flag) de la CPU == //
-    let count = 0;
-    for(let i = 0; i < 8; i++){
-        if (byte & (1 << i)) count++;
-    }
-    return (count % 2 === 0) ? 1 : 0;
+function isMap(value){
+    return Object.prototype.toString.call(value) === "[object Map]";
+}
+function objToMap(obj){
+    return new Map(Object.entries(obj));
 }

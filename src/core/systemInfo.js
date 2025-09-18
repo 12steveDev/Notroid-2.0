@@ -8,5 +8,8 @@ const SystemInfo = {
         NAME: "ExtraFlux RGB Pro",
         TYPE: "DDR911",
         SIZE_BYTES: 1028 * 1028, // 1MB
+    },
+    OS: {
+        FILE_SYSTEM: "NFS", // Notroid File System
     }
 }

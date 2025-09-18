@@ -82,7 +82,11 @@ class BIOS {
         }
         Terminal.clear();
         await sleep(200);
-        cpu.regs.PC = 0x7C00;
-        cpu.run();
+        // let bootmbr = FileSystem.read("/boot.mbr");
+        // if (bootmbr){
+        //     ram.load(bootmbr, 0x7C00);
+        // }
+        // cpu.regs.PC = 0x7C00;
+        // cpu.run();
     }
 }

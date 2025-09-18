@@ -38,6 +38,13 @@ class Memory {
         }
         return chars.join("");
     }
+
+    load(addr, bytes){
+        // * Carga un bloque de bytes en memoria desde una posición * //
+        if (!(bytes instanceof Uint8Array || Array.isArray(bytes))) throw new Error(`load() espera un Array o Uint8Array`);
+        if (addr < 0 || addr + bytes.length > this.data.length) throw new Error(`Segmentation Fault al cargar en addr=${hex(addr)}`);
+        this.data.set(bytes, addr);
+    }
 }
 
 const ram = new Memory(SystemInfo.RAM.SIZE_BYTES);
