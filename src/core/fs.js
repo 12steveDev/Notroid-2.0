@@ -77,7 +77,7 @@ class FileSystem {
 
     static write(path, data){
         const f = this.find(path);
-        if (!(f instanceof NFile)) throw new Error(`'${f.name}' is not a folder`);
-        // ! Hasta aquí llegué
+        if (!(f instanceof NFile)) throw new Error(`'${f.name}' is not a file`);
+        f.write(data);
     }
 }

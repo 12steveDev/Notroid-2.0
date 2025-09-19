@@ -16,6 +16,7 @@ Los mismos básicos de `assembly` (`AX`, `BX`, `CX` y `DX`) y `PC` como **Progra
 - `0xB0..0xB7 imm8`: Mueve **imm8** a `{al, bl, cl, dl, ah, bh, ch, dh}`.
 - `0xB8..0xBB imm16`: Mueve **imm16** a `{ax, bx, cx, dx}`.
 - `0xCD imm8`: Interrumpe a la **BIOS**.
+- `0xF4`: Detiene la **CPU**.
 
 ### Interrupciones BIOS
 - `0x00`: Cambia el modo de video.

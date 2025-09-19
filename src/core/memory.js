@@ -27,16 +27,24 @@ class Memory {
             .join(" ");
     }
 
-    readString(addr){
-        // * Lee bytes hasta encontrar 0x00 y retorna como string * //
+    readStringAt(addr, max=1024*1024){
+        // * Lee bytes hasta encontrar 0x00 y retorna como string. El último caracter se incluye (si max = 1024, leerá hasta 1024) * //
         let chars = [];
+        let count = 0;
         while (addr < this.data.length){
             const byte = this.read(addr);
             if (byte === 0x00) break;
             chars.push(String.fromCharCode(byte));
+            count++;
+            if (count >= max) break;
             addr++;
         }
         return chars.join("");
+    }
+
+    writeStringAt(addr, data){
+        // * Escribe un array de bytes en memoria * //
+        // ! Hasta aquí llegué
     }
 
     load(addr, bytes){

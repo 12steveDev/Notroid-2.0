@@ -86,7 +86,7 @@ class BIOS {
         // if (bootmbr){
         //     ram.load(bootmbr, 0x7C00);
         // }
-        // cpu.regs.PC = 0x7C00;
-        // cpu.run();
+        cpu.regs.PC = 0x7C00;
+        cpu.run();
     }
 }
